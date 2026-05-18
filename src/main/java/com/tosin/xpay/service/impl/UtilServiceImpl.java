@@ -91,7 +91,7 @@ public class UtilServiceImpl implements UtilService{
 			
 			pageSize = 1;
 			
-		} return 50;
+		} return pageSize;
 	} 
 	
 	@Override

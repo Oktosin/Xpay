@@ -87,8 +87,10 @@ public class TransactionServiceImpl implements TransactionService {
 				.transactionStatus(TransactionStatus.SUCCESS)
 				.createdAt(LocalDateTime.now())
 				.build();
+		
+		Transaction savedTransaction = transactionDAO.save(transaction);
 				
-		response.put("transactionDetail", transaction);
+		response.put("transactionDetail", savedTransaction);
 		response.put("message", "transfer successful");
 		
 		return utilService.getResponse(response, HttpStatus.OK);
@@ -129,7 +131,9 @@ public class TransactionServiceImpl implements TransactionService {
 				.createdAt(LocalDateTime.now())
 				.build();
 		
-		response.put("transactionDetail", transaction);
+		Transaction savedTransaction = transactionDAO.save(transaction);
+		
+		response.put("transactionDetail", savedTransaction);
 		response.put("message", "account credited");
 		
 		return utilService.getResponse(response, HttpStatus.OK);
@@ -172,7 +176,9 @@ public class TransactionServiceImpl implements TransactionService {
 				.createdAt(LocalDateTime.now())
 				.build();
 		
-		response.put("transactionDetail", transaction);
+		Transaction savedTransaction = transactionDAO.save(transaction);
+		
+		response.put("transactionDetail", savedTransaction);
 		response.put("message", "withdrawal successful");
 		
 		return utilService.getResponse(response, HttpStatus.OK);
@@ -187,13 +193,15 @@ public class TransactionServiceImpl implements TransactionService {
 		if (existingAccount == null) {
 			
 			response.put("errorMessage", "account not found");
+			
+			return utilService.getResponse(response, HttpStatus.NOT_FOUND);
 		}
 		
 		int pageNumber = requestPayload.getPageNumber();
 		int pageSize = utilService.pageSizeLimit(requestPayload.getPageSize());
 		
 		Pageable pageable = PageRequest.of(pageNumber, pageSize);
-		Page<Transaction> transactions = transactionDAO.findAllTransaction(pageable);
+		Page<Transaction> transactions = transactionDAO.findTransactionHistoryByAccountNumber(accountNumber,pageable);
 		
 		response.put("transactionHistory", transactions.getContent());
 		response.put("currentPage", transactions.getNumber());
