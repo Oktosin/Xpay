@@ -4,6 +4,8 @@ import java.util.Map;
 
 import org.springframework.security.core.Authentication;
 
+import com.tosin.xpay.dto.PasswordResetConfirmRequest;
+import com.tosin.xpay.dto.PasswordResetOtpRequest;
 import com.tosin.xpay.dto.UserLoginRequest;
 import com.tosin.xpay.dto.UserLogoutRequest;
 
@@ -15,5 +17,9 @@ public interface AuthService {
 	Map<String, Object> userLogout(UserLogoutRequest userLogoutRequest, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Authentication authentication);
 
 	Map<String, Object> userLogin(UserLoginRequest userLoginRequest, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Authentication authentication);
+
+	Map<String, Object> requestPasswordResetOtp(PasswordResetOtpRequest passwordResetOtpRequest);
+
+	Map<String, Object> resetPasswordWithOtp(PasswordResetConfirmRequest passwordResetConfirmRequest);
 
 }

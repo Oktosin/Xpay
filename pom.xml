@@ -5,14 +5,14 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>4.0.6</version>
+		<version>4.0.3</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.xpay</groupId>
-	<artifactId>Xpay</artifactId>
+	<groupId>com.tosin</groupId>
+	<artifactId>xpay</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>Xpay</name>
-	<description/>
+	<description>Demo project for Spring Boot</description>
 	<url/>
 	<licenses>
 		<license/>
@@ -36,12 +36,11 @@
 		</dependency>
 		
 		<dependency>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-web</artifactId>
-    </dependency>
-    
-    
-    <!-- DATABASE STARTS HERE -->
+    		<groupId>org.projectlombok</groupId>
+    		<artifactId>lombok</artifactId>
+    		<version>1.18.32</version>
+    		<scope>provided</scope>
+		</dependency>
 		
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -79,6 +78,11 @@
 		    <artifactId>postgresql</artifactId>
 		</dependency>
 		
+		<dependency>
+    		<groupId>org.springframework.boot</groupId>
+    		<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>	
+		
 		<!-- =========================== SECURTY STARTS HERE =========================== -->   	
 		
 		<dependency>
@@ -90,25 +94,28 @@
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-core</artifactId>
         </dependency>
+                
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-data</artifactId>
+        </dependency>
         
- 	    <!-- OAuth2 Resource Server (JWT support) -->
-	    <dependency>
+	<!--============================-->
+		    <dependency>
 	        <groupId>org.springframework.boot</groupId>
 	        <artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
 	    </dependency>       
+
+	    <dependency>
+	        <groupId>org.springframework.boot</groupId>
+	        <artifactId>spring-boot-starter-mail</artifactId>
+	    </dependency>
         
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-data</artifactId>
-        </dependency>		
-		
-		<dependency>
-		    <groupId>org.projectlombok</groupId>
-		    <artifactId>lombok</artifactId>
-		    <version>1.18.34</version>
-		    <scope>provided</scope>
-		</dependency>
-
+        </dependency>	
+	
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>

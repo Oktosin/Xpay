@@ -16,4 +16,10 @@ public interface TransactionDAO extends JpaRepository<Transaction, Long> {
 	@Query("SELECT t FROM Transaction t WHERE t.senderAccountNumber = :accountNumber OR t.receiverAccountNumber = :accountNumber ORDER BY t.createdAt DESC")
 	Page<Transaction> findTransactionHistoryByAccountNumber(@Param("accountNumber")String accountNumber, Pageable pageable);
 
+	@Query("SELECT t FROM Transaction t WHERE t.reference = :reference")
+	Transaction findTransactionByReference(@Param("reference") String reference);
+
+	@Query("SELECT t FROM Transaction t WHERE t.originalTransactionReference = :reference")
+	Transaction findTransactionByOriginalTransactionReference(@Param("reference") String reference);
+
 }

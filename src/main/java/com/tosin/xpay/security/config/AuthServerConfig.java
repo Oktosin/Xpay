@@ -52,6 +52,7 @@ public class AuthServerConfig {
 		           	request.requestMatchers("/customer/create/**").permitAll();
 		           	request.requestMatchers("/auth/login/**").permitAll();
 		           	request.requestMatchers("/auth/logout/**").permitAll();
+					request.requestMatchers("/auth/password-reset/**").permitAll();
 		           	request.requestMatchers("/customer/find/**").permitAll();
 		           		           
 		           	// PAYMENT SERVICE - REQUIRE BOTH ROLE AND AUTHORITY -------------------------------------------------------------------------------------------------------------------------- 

@@ -1,0 +1,16 @@
+package com.tosin.xpay.dto;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class PasswordResetConfirmRequest {
+
+	private String userId;
+	private String otp;
+	private String newPassword;
+
+}

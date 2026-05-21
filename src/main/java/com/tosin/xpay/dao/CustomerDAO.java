@@ -22,6 +22,9 @@ public interface CustomerDAO extends JpaRepository<Customer, Long> {
 
 	@Query("SELECT c FROM Customer c WHERE c.userData = :userData AND c.account = :account")
 	Optional<Customer> findCustomerByUserDataAndAccount(@Param("userData")UserData userData, @Param("account")Account account);
+
+	@Query("SELECT c FROM Customer c WHERE c.account = :account")
+	Optional<Customer> findCustomerByAccount(@Param("account")Account account);
 	
 	@Query("SELECT c FROM Customer c ORDER BY c.id DESC")
 	Page<Customer> findAllCustomers(Pageable pageable);

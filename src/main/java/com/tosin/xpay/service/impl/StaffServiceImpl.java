@@ -21,6 +21,7 @@ import com.tosin.xpay.dto.RequestPayload;
 import com.tosin.xpay.dto.StaffRegistrationResponse;
 import com.tosin.xpay.model.Staff;
 import com.tosin.xpay.model.UserData;
+import com.tosin.xpay.service.EmailNotificationService;
 import com.tosin.xpay.service.StaffService;
 import com.tosin.xpay.service.UtilService;
 import org.springframework.data.domain.Pageable;
@@ -32,6 +33,7 @@ public class StaffServiceImpl implements StaffService {
 	@Autowired private UserDataDAO userDataDAO;
 	@Autowired private UtilService utilService;
 	@Autowired private PasswordEncoder passwordEncoder;
+	@Autowired private EmailNotificationService emailNotificationService;
 	
 	Map<String, Object> response = new LinkedHashMap<>();
 	
@@ -62,6 +64,7 @@ public class StaffServiceImpl implements StaffService {
 		staff = staffDAO.save(staff);
 		
 		StaffRegistrationResponse staffRegistrationResponse = utilService.getBasicStaffInformation(userData, staff);
+		emailNotificationService.sendRegistrationNotification(userData, registrationRequest.getFirstName());
 		response.put("staffInfo", staffRegistrationResponse);
 		
 		return utilService.getResponse(response, HttpStatus.OK);

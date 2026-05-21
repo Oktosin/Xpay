@@ -4,6 +4,7 @@ import org.springframework.http.ResponseEntity;
 
 import com.tosin.xpay.dto.DepositRequest;
 import com.tosin.xpay.dto.RequestPayload;
+import com.tosin.xpay.dto.ReversalRequest;
 import com.tosin.xpay.dto.TransferRequest;
 import com.tosin.xpay.dto.WithdrawalRequest;
 
@@ -14,6 +15,8 @@ public interface TransactionService {
 	ResponseEntity<?> deposit(DepositRequest depositRequest);
 
 	ResponseEntity<?> withdrawal(WithdrawalRequest withdrawalRequest);
+
+	ResponseEntity<?> reverseTransaction(ReversalRequest reversalRequest);
 
 	ResponseEntity<?> getTransactionHistory(String accountNumber, RequestPayload requestPayload);
 

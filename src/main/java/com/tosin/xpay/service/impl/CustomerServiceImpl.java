@@ -26,6 +26,7 @@ import com.tosin.xpay.model.Account;
 import com.tosin.xpay.model.Customer;
 import com.tosin.xpay.model.UserData;
 import com.tosin.xpay.service.CustomerService;
+import com.tosin.xpay.service.EmailNotificationService;
 import com.tosin.xpay.service.UtilService;
 import org.springframework.data.domain.Pageable;
 
@@ -37,6 +38,7 @@ public class CustomerServiceImpl implements CustomerService {
 	@Autowired private UtilService utilService;
 	@Autowired private AccountDAO accountDAO;
 	@Autowired private PasswordEncoder passwordEncoder;
+	@Autowired private EmailNotificationService emailNotificationService;
 	
 	Map<String, Object> response = new LinkedHashMap<>();
 	
@@ -74,6 +76,7 @@ public class CustomerServiceImpl implements CustomerService {
 		customer = customerDAO.save(customer);
 		
 		CustomerRegistrationResponse customerRegistrationResponse = utilService.getBasicCustomerInformation(userData, customer, account);
+		emailNotificationService.sendRegistrationNotification(userData, registrationRequest.getFirstName());
 		response.put("customerInfo", customerRegistrationResponse);
 		
 		return utilService.getResponse(response, HttpStatus.OK);

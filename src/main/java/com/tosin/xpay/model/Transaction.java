@@ -41,11 +41,14 @@ public class Transaction implements Serializable{
 	
 	@Column(name = "reference")
 	private String reference;
+
+	@Column(name = "originalTransactionReference")
+	private String originalTransactionReference;
 	
-	@Column(name = "senderAccountNumber", nullable = false)
+	@Column(name = "senderAccountNumber")
 	private String senderAccountNumber;
 	
-	@Column (name = "receiverAccountNumber", nullable = false)
+	@Column (name = "receiverAccountNumber")
 	private String receiverAccountNumber;
 	
 	@Column(name = "amount", nullable = false)
@@ -65,6 +68,12 @@ public class Transaction implements Serializable{
 	
 	@Column(name = "description", nullable = false)
 	private String description;
+
+	@Column(name = "reversed", nullable = false, columnDefinition = "boolean default false")
+	private boolean reversed;
+
+	@Column(name = "reversed_at")
+	private LocalDateTime reversedAt;
 	
 	@CreationTimestamp
 	@Column(name = "created_at", nullable = false, updatable = false)
