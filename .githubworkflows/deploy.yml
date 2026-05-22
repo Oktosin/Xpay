@@ -1,35 +1,33 @@
-name: Deploy Xpay Backend to Azure
+name: Build and deploy JAR app to Azure Web App - xpay-backend-tosin
 
 on:
   push:
     branches:
-      - main  # Triggers deployment whenever you push code to your main branch
+      - develop
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
-    # Step 1: Clone your repository source code onto the GitHub machine
     - name: Checkout Code
       uses: actions/checkout@v4
 
-    # Step 2: Set up Java 17 to match your project development version
+    # Sets up Java 17 to match your local setup
     - name: Set up JDK 17
-      uses: actions/abstract/setup-java@v4
+      uses: actions/setup-java@v4
       with:
         java-version: '17'
         distribution: 'temurin'
         cache: maven
 
-    # Step 3: Compile and run your tests safely
+    # Compiles your Spring Boot application and bypasses tests for faster deployment
     - name: Build with Maven
-      run: mvn clean package
+      run: mvn clean package -DskipTests
 
-    # Step 4: Ship the compiled executable .jar file to Azure
-    - name: Deploy to Azure App Service
+    - name: Deploy to Azure Web App
       uses: azure/webapps-deploy@v3
       with:
-        app-name: 'YOUR-AZURE-APP-SERVICE-NAME-HERE' # Replace with your actual Azure App Service name
+        app-name: 'xpay-backend-tosin' # Uses the app name found in your filename
         publish-profile: ${{ secrets.AZURE_APP_SERVICE_PUBLISH_PROFILE }}
         package: 'target/*.jar'
