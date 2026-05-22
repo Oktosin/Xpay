@@ -1,4 +1,4 @@
-package com.tosin;
+package com.tosin.xpay;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
