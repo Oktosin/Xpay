@@ -25,7 +25,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "transaction")
+@Table(name = "transactions")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -69,8 +69,8 @@ public class Transaction implements Serializable{
 	@Column(name = "description", nullable = false)
 	private String description;
 
-	@Column(name = "reversed", nullable = false, columnDefinition = "boolean default false")
-	private boolean reversed;
+	@Column(name = "reversed", columnDefinition = "bit default 0", nullable = false)
+	private boolean reversed = false;
 
 	@Column(name = "reversed_at")
 	private LocalDateTime reversedAt;
