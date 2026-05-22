@@ -23,7 +23,7 @@ jobs:
 
     # Compiles your Spring Boot application and bypasses tests for faster deployment
     - name: Build with Maven
-      run: mvn clean package -DskipTests
+      run: mvn clean package -Dmaven.test.skip=true
 
     - name: Deploy to Azure Web App
       uses: azure/webapps-deploy@v3
