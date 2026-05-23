@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.tosin.xpay.dto.PasswordResetConfirmRequest;
 import com.tosin.xpay.dto.PasswordResetOtpRequest;
 import com.tosin.xpay.dto.UserLoginRequest;
+import com.tosin.xpay.dto.UserLogoutRequest;
 import com.tosin.xpay.service.AuthService;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -28,6 +29,11 @@ public class AuthController {
 	@RequestMapping(value = "login", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE, method = {RequestMethod.GET, RequestMethod.POST})
 	public Map<String, Object> userLogin(@RequestBody UserLoginRequest userLoginRequest, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Authentication authentication) {
 		return authService.userLogin(userLoginRequest, httpServletRequest, httpServletResponse, authentication);
+	}
+	
+	@RequestMapping(value = "logout", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE, method = {RequestMethod.GET, RequestMethod.POST})
+	public Map<String, Object> userLogout(@RequestBody UserLogoutRequest userLogoutRequest, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Authentication authentication) {
+		return authService.userLogout(userLogoutRequest, httpServletRequest, httpServletResponse, authentication);
 	}
 
 	@RequestMapping(value = "password-reset/request-otp", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE, method = {RequestMethod.GET, RequestMethod.POST})
