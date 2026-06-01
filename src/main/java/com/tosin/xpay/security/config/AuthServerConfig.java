@@ -15,6 +15,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.logout.HeaderWriterLogoutHandler;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.header.writers.ClearSiteDataHeaderWriter;
 
 @Configuration
@@ -26,6 +27,7 @@ public class AuthServerConfig {
 	@Autowired private CustomAccessDeniedHandler customAccessDeniedHandler;	
 	@Autowired private CustomSessionExpiredStrategy customSessionExpiredStrategy;
 	@Autowired private CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
+	@Autowired private RateLimitingFilter rateLimitingFilter;
 	
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
@@ -36,8 +38,10 @@ public class AuthServerConfig {
     	// SKIP CSRF IF AUTHORIZATION HEADER CONTAINS BEARER TOKEN- SUPPORT STATELESS API CLIENTS (JWT) AND STATEFUL API CLIENTS (SESSION)
     	//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------   	    
         
-    	//CSRF & CORS
+        //CSRF & CORS
         httpSecurity.csrf(AbstractHttpConfigurer::disable).cors(Customizer.withDefaults());           
+
+		httpSecurity.addFilterBefore(rateLimitingFilter, UsernamePasswordAuthenticationFilter.class);
         
         //REQUEST AUTHORIZATION RULES
         //==========================================================================================================================================================================================
@@ -55,14 +59,7 @@ public class AuthServerConfig {
 					request.requestMatchers("/auth/password-reset/**").permitAll();
 		           	request.requestMatchers("/customer/find/**").permitAll();
 		           		           
-		           	// PAYMENT SERVICE - REQUIRE BOTH ROLE AND AUTHORITY -------------------------------------------------------------------------------------------------------------------------- 
-		           		           	
-		           	request.requestMatchers("/teacher/staff/**").access(AuthorizationManagers.allOf(
-										           			
-																				AuthorityAuthorizationManager.hasRole("TEACHER"), 
-																				AuthorityAuthorizationManager.hasAnyAuthority("TEACHER")
-																
-														  					));		           	
+		           		           			           	
 		           
 		           	request.anyRequest().fullyAuthenticated();
                                                          
