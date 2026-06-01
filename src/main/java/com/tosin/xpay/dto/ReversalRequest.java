@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 public class ReversalRequest {
 
 	private String reference;
+	private String idempotencyKey;
 	private String description;
 
 }

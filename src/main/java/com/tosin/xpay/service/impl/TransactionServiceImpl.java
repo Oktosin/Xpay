@@ -55,6 +55,14 @@ public class TransactionServiceImpl implements TransactionService {
 			return utilService.getResponse(response, HttpStatus.BAD_REQUEST);
 		}
 		
+		Transaction existingIdempotentTransaction = findIdempotentTransaction(transferRequest.getIdempotencyKey());
+
+		if (existingIdempotentTransaction != null) {
+			response.put("transactionDetail", existingIdempotentTransaction);
+			response.put("message", "idempotent transfer response");
+			return utilService.getResponse(response, HttpStatus.OK);
+		}
+
 		Account sender = accountDAO.findAccountNumber(transferRequest.getSenderAccountNumber());
 		
 		if(sender == null) {
@@ -116,6 +124,7 @@ public class TransactionServiceImpl implements TransactionService {
 				.reference(UUID.randomUUID().toString())
 				.senderAccountNumber(sender.getAccountNumber())
 				.receiverAccountNumber(receiver.getAccountNumber())
+				.idempotencyKey(blankToNull(transferRequest.getIdempotencyKey()))
 				.amount(amount)
 				.customer(senderCustomer)
 				.description(safeText(transferRequest.getDescription()))
@@ -147,6 +156,14 @@ public class TransactionServiceImpl implements TransactionService {
 			return utilService.getResponse(response, HttpStatus.BAD_REQUEST);
 		}
 		
+		Transaction existingIdempotentTransaction = findIdempotentTransaction(depositRequest.getIdempotencyKey());
+
+		if (existingIdempotentTransaction != null) {
+			response.put("transactionDetail", existingIdempotentTransaction);
+			response.put("message", "idempotent deposit response");
+			return utilService.getResponse(response, HttpStatus.OK);
+		}
+
 		Account account = accountDAO.findAccountNumber(depositRequest.getAccountNumber());
 		
 		if(account == null) {
@@ -181,6 +198,7 @@ public class TransactionServiceImpl implements TransactionService {
 		Transaction transaction = Transaction.builder()
 				.reference(UUID.randomUUID().toString())
 				.receiverAccountNumber(depositRequest.getAccountNumber())
+				.idempotencyKey(blankToNull(depositRequest.getIdempotencyKey()))
 				.amount(amount)
 				.customer(customer)
 				.description(safeText(depositRequest.getDescription()))
@@ -211,6 +229,14 @@ public class TransactionServiceImpl implements TransactionService {
 			return utilService.getResponse(response, HttpStatus.BAD_REQUEST);
 		}
 		
+		Transaction existingIdempotentTransaction = findIdempotentTransaction(withdrawalRequest.getIdempotencyKey());
+
+		if (existingIdempotentTransaction != null) {
+			response.put("transactionDetail", existingIdempotentTransaction);
+			response.put("message", "idempotent withdrawal response");
+			return utilService.getResponse(response, HttpStatus.OK);
+		}
+
 		Account account = accountDAO.findAccountNumber(withdrawalRequest.getAccountNumber());
 		
 		if (account == null) {
@@ -251,6 +277,7 @@ public class TransactionServiceImpl implements TransactionService {
 		Transaction transaction = Transaction.builder()
 				.reference(UUID.randomUUID().toString())
 				.senderAccountNumber(withdrawalRequest.getAccountNumber())
+				.idempotencyKey(blankToNull(withdrawalRequest.getIdempotencyKey()))
 				.amount(withdrawalRequest.getAmount())
 				.customer(customer)
 				.description(safeText(withdrawalRequest.getDescription()))
@@ -278,6 +305,14 @@ public class TransactionServiceImpl implements TransactionService {
 			response.put("message", "transaction reference is required");
 			
 			return utilService.getResponse(response, HttpStatus.BAD_REQUEST);
+		}
+
+		Transaction existingIdempotentTransaction = findIdempotentTransaction(reversalRequest.getIdempotencyKey());
+
+		if (existingIdempotentTransaction != null) {
+			response.put("transactionDetail", existingIdempotentTransaction);
+			response.put("message", "idempotent reversal response");
+			return utilService.getResponse(response, HttpStatus.OK);
 		}
 
 		Transaction originalTransaction = transactionDAO.findTransactionByReference(reversalRequest.getReference());
@@ -534,6 +569,7 @@ public class TransactionServiceImpl implements TransactionService {
 		return Transaction.builder()
 				.reference(UUID.randomUUID().toString())
 				.originalTransactionReference(originalTransaction.getReference())
+				.idempotencyKey(blankToNull(reversalRequest.getIdempotencyKey()))
 				.senderAccountNumber(senderAccountNumber)
 				.receiverAccountNumber(receiverAccountNumber)
 				.amount(originalTransaction.getAmount())
@@ -550,6 +586,7 @@ public class TransactionServiceImpl implements TransactionService {
 		return Transaction.builder()
 				.reference(UUID.randomUUID().toString())
 				.originalTransactionReference(originalTransaction.getReference())
+				.idempotencyKey(blankToNull(reversalRequest.getIdempotencyKey()))
 				.senderAccountNumber(senderAccountNumber)
 				.receiverAccountNumber(receiverAccountNumber)
 				.amount(originalTransaction.getAmount())
@@ -574,6 +611,18 @@ public class TransactionServiceImpl implements TransactionService {
 
 	private boolean isBlank(String value) {
 		return value == null || value.isBlank();
+	}
+
+	private String blankToNull(String value) {
+		return isBlank(value) ? null : value;
+	}
+
+	private Transaction findIdempotentTransaction(String idempotencyKey) {
+		if (isBlank(idempotencyKey)) {
+			return null;
+		}
+
+		return transactionDAO.findTransactionByIdempotencyKey(idempotencyKey);
 	}
 
 	private void sendReversalNotification(Transaction reversalTransaction) {

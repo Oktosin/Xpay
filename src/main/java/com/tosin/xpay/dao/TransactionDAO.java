@@ -22,4 +22,7 @@ public interface TransactionDAO extends JpaRepository<Transaction, Long> {
 	@Query("SELECT t FROM Transaction t WHERE t.originalTransactionReference = :reference")
 	Transaction findTransactionByOriginalTransactionReference(@Param("reference") String reference);
 
+	@Query("SELECT t FROM Transaction t WHERE t.idempotencyKey = :idempotencyKey")
+	Transaction findTransactionByIdempotencyKey(@Param("idempotencyKey") String idempotencyKey);
+
 }

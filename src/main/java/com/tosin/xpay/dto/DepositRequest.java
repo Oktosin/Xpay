@@ -13,6 +13,7 @@ public class DepositRequest {
 	
 	private String accountNumber;
 	private BigDecimal amount;
+	private String idempotencyKey;
 	private String description;
 	
 

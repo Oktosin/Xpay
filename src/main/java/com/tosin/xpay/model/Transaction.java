@@ -44,6 +44,9 @@ public class Transaction implements Serializable{
 
 	@Column(name = "originalTransactionReference")
 	private String originalTransactionReference;
+
+	@Column(name = "idempotencyKey", unique = true)
+	private String idempotencyKey;
 	
 	@Column(name = "senderAccountNumber")
 	private String senderAccountNumber;
