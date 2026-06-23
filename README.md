@@ -514,7 +514,7 @@ This project is currently under active development and APIs may change without n
 
 Author
 
-Tosin John Okuwobi
+Tosin Okuwobi
 
 Backend Engineer | Java & Spring Boot Developer
 
