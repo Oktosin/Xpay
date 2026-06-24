@@ -224,13 +224,13 @@ Example Request:
 ### Find Customer by Account Number
 
 ```http
-POST /api/customer/find-by-account-number
+GET /api/customer/find-by-account-number
 ```
 
 ### Get All Customers
 
 ```http
-POST /api/customer/find-all
+GET /api/customer/find-all
 ```
 
 ---
@@ -246,13 +246,13 @@ POST /api/staff/create
 ### Find Staff
 
 ```http
-POST /api/staff/find
+GET /api/staff/find
 ```
 
 ### Get All Staff
 
 ```http
-POST /api/staff/find-all
+GET /api/staff/find-all
 ```
 
 ---
@@ -320,13 +320,13 @@ POST /api/transaction/reverse
 ### Transaction History
 
 ```http
-POST /api/transaction/history/{accountNumber}
+GET /api/transaction/history/{accountNumber}
 ```
 
 Example:
 
 ```http
-POST /api/transaction/history/100001
+GET /api/transaction/history/100001
 ```
 
 ---
@@ -394,13 +394,13 @@ POST /api/card/release-expired-authorizations
 ### Card Transaction History
 
 ```http
-POST /api/card/history/{accountNumber}
+GET /api/card/history/{accountNumber}
 ```
 
 Example:
 
 ```http
-POST /api/card/history/100001
+GET /api/card/history/100001
 ```
 
 ---
@@ -410,7 +410,7 @@ POST /api/card/history/100001
 ### Find User
 
 ```http
-POST /api/user-data/find-user
+GET /api/user-data/find-user
 ```
 
 ---
