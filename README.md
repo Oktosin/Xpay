@@ -1,10 +1,21 @@
 # XPay
+**Springboot backend that mimics real fintech payment + banking flows**
 
-A secure digital banking and payment platform built with Spring Boot, designed to support customer onboarding, account management, fund transfers, card issuance, card payments, and transaction processing.
+XPay is a secure digital banking API built with Java 17 + Springboot. It handles customer onboarding, account-to-account transfers, card issuance, payment authorization/capture, and transaction reversals - with idempotency to prevent double charges.
 
-> **Project Status:** 🚧 Under Active Development
+**What makes it hard:**
+- **Idempotency keys**: Safe retries for transfers/deposits using Redis + DB constraints
+- **Card auth/capture**: Authorization holds + automatic release of expired holds 
+- **Security**: Spring Security + rate limiting + custom auth handlers + OTP password reset
 
----
+**Try it in 60s:**
+1. Clone + `mvn spring-boot:run` 
+2. `POST /api/transaction/transfer` with idempotency key
+3. Test card auth flow with sample data below
+
+**Stack:** Java 17, Springboot 4, Spring Security, JPA/Hibernate, SQL Server, Lombok
+
+--- 
 
 ## Overview
 
@@ -31,6 +42,10 @@ The project follows a layered architecture using:
 * Microsoft SQL Server
 * Maven
 * Lombok
+
+---
+
+> **Project Status:** 🚧 Under Active Development 🔄 Adding JWT and Email integration next.
 
 ---
 
