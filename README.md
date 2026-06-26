@@ -8,12 +8,51 @@ XPay is a secure digital banking API built with Java 17 + Springboot. It handles
 - **Card auth/capture**: Authorization holds + automatic release of expired holds 
 - **Security**: Spring Security + rate limiting + custom auth handlers + OTP password reset
 
-**Try it in 60s:**
-1. Clone + `mvn spring-boot:run` 
-2. `POST /api/transaction/transfer` with idempotency key
-3. Test card auth flow with sample data below
+**Status:** ✅ Core fintech flows (under active development)| 🔄 Adding JWT + Email integration next.
 
-**Stack:** Java 17, Springboot 4, Spring Security, JPA/Hibernate, SQL Server, Lombok
+**Try it in 60s:**
+
+> **Note:** All `/api/transaction/*` and `/api/card/*` endpoints require authentication. Login first.
+
+```bash
+# 1. Login and grab your session cookie
+curl -X POST http://localhost:8080/api/auth/login \
+-H "Content-Type: application/json" \
+-d '{"username":"john","password":"password123"}'
+
+# 2. Transfer funds with idempotency
+curl -X POST http://localhost:8080/api/transaction/transfer \
+-H "Cookie: JSESSIONID=your-session-id" \
+-H "Content-Type: application/json" \
+-d '{
+  "senderAccountNumber": "100001",
+  "receiverAccountNumber": "100002", 
+  "amount": 5000,
+  "idempotencyKey": "txn-001",
+  "description": "Test transfer"
+}'
+
+# 3. Deposit funds 
+curl -X POST http://localhost:8080/api/transaction/deposit \
+-H "Cookie: JSESSIONID=your-session-id" \
+-H "Content-Type: application/json" \
+-d '{
+  "accountNumber": "100001",
+  "amount": 10000,
+  "idempotencyKey": "dep-001",
+  "description": "Cash Deposit"
+}'
+
+# 4. Authorize a card payment
+curl -X POST http://localhost:8080/api/card/authorize \
+-H "Cookie: JSESSIONID=your-session-id" \
+-H "Content-Type: application/json" \
+-d '{
+  "accountNumber": "100001",
+  "amount": 2500,
+  "cardNumber": "4111111"
+}'
+```
 
 --- 
 
@@ -42,10 +81,6 @@ The project follows a layered architecture using:
 * Microsoft SQL Server
 * Maven
 * Lombok
-
----
-
-> **Project Status:** 🚧 Under Active Development 🔄 Adding JWT and Email integration next.
 
 ---
 
