@@ -1,5 +1,5 @@
 # XPay
-**Springboot backend that mimics real fintech payment + banking flows**
+**Production-inspired fintech backend implementing secure banking APIs, payment authorization flows, transaction reversals, and idempotent money movement using Java and Spring Boot.**
 
 XPay is a secure digital banking API built with Java 17 + Springboot. It handles customer onboarding, account-to-account transfers, card issuance, payment authorization/capture, and transaction reversals - with idempotency to prevent double charges.
 
